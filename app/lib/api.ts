@@ -11,4 +11,4 @@ export const fetchArticles = async (): Promise<Article[]> => {
     }
     const data = await response.json();
     return data.data;
-}
+};

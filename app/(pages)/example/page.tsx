@@ -7,6 +7,6 @@ const Example = () => {
             <h2><Link className="text-md underline" href="/">Home</Link></h2>
         </div>
     );
-}
+};
  
 export default Example;
