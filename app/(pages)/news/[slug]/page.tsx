@@ -1,6 +1,5 @@
 import { fetchArticles, STRAPI_URL } from "@/app/lib/api";
 import { Article, NewsParams } from "@/app/types";
-import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -42,7 +41,6 @@ const News = ({ params } : { params: NewsParams }) => {
             <div className="p-4">
                 <h3 className="text-lg font-bold mb-2 text-gray-500">{newsArticle.title}</h3>
                 <p className="text-gray-600 mb-4">{newsArticle.description}</p>
-                <Link className="text-sm text-gray-900" href={"news/" + newsArticle.slug}>Read More...</Link>
             </div>
         </div>
     );
