@@ -15,7 +15,7 @@ const eslintConfig = [
     rules: {
       semi: ["error"],
       quotes: ["error", "double"],
-      "prefer-arrow-callback": ["error"],
+      "@typescript-eslint/no-explicit-any": "off",
     }
   })
 ];

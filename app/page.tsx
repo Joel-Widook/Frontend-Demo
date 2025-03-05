@@ -18,7 +18,7 @@ export default async function Home() {
   return (
     <div className="p-6">
       <h1 className="text-4xl font-bold mb-4">Next.js and Strapi Integration</h1>
-      <h2><Link className="text-md underline" href="/example">Second page example</Link></h2>
+      <h2><Link className="text-md underline" href="/example">Second page</Link></h2>
       <div>
         <h2 className="text-2xl font-semibold mt-6 mb-6">Articles</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

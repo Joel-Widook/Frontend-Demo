@@ -3,34 +3,45 @@ import { Article, NewsParams } from "@/app/types";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-// build a list of the url parameters we need
-let articles: Article[] = [];
-
+// Función para obtener los artículos (mantenemos la funcion async)
+async function getArticles(): Promise<Article[]> {
   try {
-    // Obtener los artículos dentro del componente
-    articles = await fetchArticles();
+    const articles = await fetchArticles();
+    return articles;
   } catch (error) {
     console.error("Failed to fetch articles:", error);
     notFound(); // Redirigir a la página 404 si hay un error
+    return [];
   }
-  
-export const generateStaticParams = () => {
-    return articles.map(article => {
-        return { slug: article.slug };
-    });
-};
+}
 
-// actually return the page content for this specific course
+// Genera los parámetros estáticos para las rutas dinámicas (funcion async)
+export async function generateStaticParams() {
+  const articles = await getArticles();
+  return articles.map((article) => ({
+    slug: article.slug,
+  }));
+}
 
-const News = ({ params } : { params: NewsParams }) => {
+// Esta funcion es asyncrona, y nos permitira realizar la logica que antes haciamos en News
+async function getNewsArticle(params: NewsParams) {
+    const articles = await getArticles();
+    console.log(articles);
+    const newsArticle = articles.find((article) => article.slug === params.slug);
 
-    const newsArticle = articles.filter(article => {
-        return article.slug === params.slug;
-    })[0];
+    if (!newsArticle) {
+        notFound();
+    }
+    return {newsArticle, revalidate: 60};
+}
+//Ahora News es async de nuevo
+export default async function News(props: any) {
+    //usamos await para esperar a que termine la promesa y obtener el valor que necesitamos.
+    const {newsArticle} = await getNewsArticle(props.params as NewsParams);
 
     return (
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
-            <Image 
+            <Image
                 className="w-full h-48 object-cover"
                 src={STRAPI_URL + newsArticle.cover.url}
                 alt={newsArticle.title}
@@ -45,5 +56,3 @@ const News = ({ params } : { params: NewsParams }) => {
         </div>
     );
 };
-
-export default News;
