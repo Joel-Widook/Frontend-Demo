@@ -1,4 +1,4 @@
-import { fetchArticles, STRAPI_URL } from "@/app/lib/api";
+import { fetchArticles, STRAPI_URL } from "@/app/hooks/useFetchArticles";
 import { Article, NewsParams } from "@/app/types";
 import Image from "next/image";
 import { notFound } from "next/navigation";

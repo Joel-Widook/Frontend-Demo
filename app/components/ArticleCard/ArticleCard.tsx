@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Article } from "../../types";
-import { STRAPI_URL } from "../../lib/api";
-import { formatDate } from "../../lib/formatDate";
+import { STRAPI_URL } from "../../hooks/useFetchArticles";
+import { formatDate } from "../../hooks/useFormatDate";
 import Link from "next/link";
 
 export const ArticleCard = ({ article }: { article: Article}) => {

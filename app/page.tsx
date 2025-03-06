@@ -1,5 +1,5 @@
 import { ArticleCard } from "./components/ArticleCard/ArticleCard";
-import { fetchArticles } from "./lib/api";
+import { fetchArticles } from "./hooks/useFetchArticles";
 import { Article } from "./types";
 import { notFound } from "next/navigation";
 import Link from "next/link";
