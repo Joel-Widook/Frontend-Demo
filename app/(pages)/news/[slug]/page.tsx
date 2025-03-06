@@ -26,7 +26,6 @@ export async function generateStaticParams() {
 // Esta funcion es asyncrona, y nos permitira realizar la logica que antes haciamos en News
 async function getNewsArticle(params: NewsParams) {
     const articles = await getArticles();
-    console.log(articles);
     const newsArticle = articles.find((article) => article.slug === params.slug);
 
     if (!newsArticle) {
