@@ -32,7 +32,7 @@ async function uploadFile(filePath: string, s3Key: string): Promise<void> {
         Body: fileContent,
         ContentType: "text/html",
     };
-
+    console.log(`Uploading file: ${filePath} to S3 key: ${s3Key}`);
     try {
         const command = new PutObjectCommand(params);
         await s3Client.send(command);
@@ -48,10 +48,11 @@ async function listS3Objects(): Promise<string[]> {
         Bucket: BUCKET_NAME,
         Prefix: S3_FOLDER,
     };
-
+    console.log(`Listing S3 objects with prefix: ${S3_FOLDER}`);
     try {
         const command = new ListObjectsCommand(params);
         const data = await s3Client.send(command);
+        console.log("S3 objects:",data.Contents);
         return data.Contents ? data.Contents.map(obj => obj.Key).filter((key): key is string => key !== undefined) : [];
     } catch (err) {
         console.error("Error listing S3 objects", err);
@@ -68,6 +69,7 @@ async function uploadDirectory(dir: string, s3Folder: string = ""): Promise<void
         const fileStat = fs.statSync(filePath);
 
         if (fileStat.isDirectory()) {
+            console.log(`Entering directory: ${filePath}`);
             await uploadDirectory(filePath, s3Key);
         } else {
             await uploadFile(filePath, s3Key);
@@ -77,6 +79,7 @@ async function uploadDirectory(dir: string, s3Folder: string = ""): Promise<void
 //usamos ObjectIdentifier para tipar los datos a eliminar.
 async function deleteMultipleFiles(s3Keys: ObjectIdentifier[]): Promise<void> {
     if(s3Keys.length === 0) {
+        console.log("No files to delete.");
         return;
     }
     const deleteParams = {
@@ -85,6 +88,7 @@ async function deleteMultipleFiles(s3Keys: ObjectIdentifier[]): Promise<void> {
             Objects: s3Keys,
         },
     };
+    console.log("Deleting multiple files in S3:", s3Keys);
     try {
         // Eliminar varios archivos
         const command = new DeleteObjectsCommand(deleteParams);
