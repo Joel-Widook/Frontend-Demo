@@ -8,8 +8,13 @@ const PROJECT_ROOT = process.cwd();
 const LOG_FILE = path.join(PROJECT_ROOT, "webhook-deploy-logs.txt");
 
 // Asegurarse de que el archivo de log exista
-if (!fs.existsSync(LOG_FILE)) {
-  fs.writeFileSync(LOG_FILE, "");
+try {
+  if (!fs.existsSync(LOG_FILE)) {
+    fs.writeFileSync(LOG_FILE, `[${new Date().toISOString()}] Log file created\n`);
+    console.log(`Archivo de log creado en: ${LOG_FILE}`);
+  }
+} catch (error) {
+  console.error(`Error al crear el archivo de log: ${error}`);
 }
 
 // Función para escribir en el archivo de log
@@ -27,9 +32,9 @@ async function runDeploy(): Promise<void> {
   
   try {
     // Ejecutar el comando de despliegue
-    logToFile("Ejecutando npm run webhook-deploy...");
+    logToFile("Ejecutando npm run deploy...");
     
-    const deployProcess = exec("npm run webhook-deploy", { 
+    const deployProcess = exec("npm run deploy", { 
       cwd: PROJECT_ROOT,
       env: { ...process.env, PATH: process.env.PATH }
     });

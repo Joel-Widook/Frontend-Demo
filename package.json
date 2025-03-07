@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "NODE_ENV=production next build",
+    "dev": "NEXT_TURBO=false next dev",
+    "build": "NODE_ENV=production NEXT_TURBO=false next build",
     "upload-to-s3": "tsx app/scripts/upload-to-s3.ts",
     "deploy": "npm run build && npm run upload-to-s3",
-    "webhook-deploy": "NODE_ENV=production next build --no-lint && npm run upload-to-s3",
+    "webhook-deploy": "NODE_ENV=production NEXT_TURBO=false next build --no-lint && npm run upload-to-s3",
     "start": "next start",
     "lint": "next lint"
   },

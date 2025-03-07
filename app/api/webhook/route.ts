@@ -41,13 +41,18 @@ export const POST = async (request: Request) => {
     
     // Responder inmediatamente al webhook para evitar timeouts
     // Ejecutar el script de despliegue en segundo plano usando el comando npm
-    logToFile(`Executing npm run webhook-deploy`);
+    logToFile(`Executing npm run deploy`);
+    
+    // Ejecutar directamente el script de despliegue
+    const scriptPath = path.join(PROJECT_ROOT, 'app', 'scripts', 'webhook-deploy.ts');
+    logToFile(`Ejecutando script: ${scriptPath}`);
     
     // Usar spawn en lugar de exec para mejor manejo de procesos
-    const deployProcess = spawn("npm", ["run", "webhook-deploy"], {
+    const deployProcess = spawn("tsx", [scriptPath], {
       detached: true, // Ejecutar en segundo plano
-      stdio: "ignore", // No vincular a la entrada/salida del proceso padre
+      stdio: ["ignore", "ignore", "ignore"], // No vincular a la entrada/salida del proceso padre
       cwd: PROJECT_ROOT,
+      env: { ...process.env, PATH: process.env.PATH }
     });
     
     // Desconectar el proceso hijo para que pueda ejecutarse independientemente
